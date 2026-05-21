@@ -56,7 +56,6 @@
       overflow: hidden;
     }
 
-    /* animated water-spray background */
     #hero::before {
       content: '';
       position: absolute; inset: 0;
@@ -71,7 +70,6 @@
       to   { opacity: 1;  transform: scale(1.04); }
     }
 
-    /* spray drops */
     .drops {
       position: absolute; inset: 0; pointer-events: none;
       overflow: hidden;
@@ -577,7 +575,6 @@
   </footer>
 
   <script>
-    // ── rain drops ──
     const container = document.getElementById('drops');
     for (let i = 0; i < 55; i++) {
       const d = document.createElement('div');
@@ -594,7 +591,6 @@
       container.appendChild(d);
     }
 
-    // ── form submit ──
     function submitForm() {
       const req = ['fname','lname','email','phone','address','service'];
       let ok = true;
@@ -608,7 +604,6 @@
       document.querySelectorAll('input,select,textarea').forEach(el => el.value = '');
     }
 
-    // ── scroll reveal ──
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
