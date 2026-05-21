@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soak & Spray Pressure Washing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0a0f1e;
+      --deep: #060b18;
+      --blue: #0057ff;
+      --cyan: #00d4ff;
+      --white: #f0f4ff;
+      --gray: #8090b0;
+      --card: #0d1428;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(6,11,24,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,212,255,0.15);
+    }
+    .nav-logo {
+      font-family: 'Black Ops One', cursive;
+      font-size: 1.3rem;
+      letter-spacing: .05em;
+      color: var(--cyan);
+    }
+    .nav-logo span { color: var(--white); }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav a { color: var(--gray); text-decoration: none; font-weight: 600; font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; transition: color .2s; }
+    nav a:hover { color: var(--cyan); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 2.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* animated water-spray background */
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(0,87,255,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 90% 60%, rgba(0,212,255,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 10% 80%, rgba(0,57,160,0.12) 0%, transparent 50%);
+      animation: pulse 6s ease-in-out infinite alternate;
+    }
+    @keyframes pulse {
+      from { opacity: .7; transform: scale(1); }
+      to   { opacity: 1;  transform: scale(1.04); }
+    }
+
+    /* spray drops */
+    .drops {
+      position: absolute; inset: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .drop {
+      position: absolute;
+      width: 2px; border-radius: 99px;
+      background: linear-gradient(to bottom, var(--cyan), transparent);
+      animation: fall linear infinite;
+      opacity: 0;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(-60px); opacity: 0; }
+      10%  { opacity: .6; }
+      90%  { opacity: .3; }
+      100% { transform: translateY(110vh); opacity: 0; }
+    }
+
+    .hero-content { position: relative; max-width: 750px; }
+
+    .hero-badge {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--cyan);
+      border: 1px solid rgba(0,212,255,.4);
+      padding: .3rem .9rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .6s ease both;
+    }
+
+    h1 {
+      font-family: 'Black Ops One', cursive;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      line-height: .95;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      animation: fadeUp .7s .1s ease both;
+    }
+    h1 .accent {
+      color: transparent;
+      -webkit-text-stroke: 2px var(--cyan);
+      display: block;
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1.15rem;
+      color: var(--gray);
+      max-width: 480px;
+      line-height: 1.65;
+      animation: fadeUp .7s .2s ease both;
+    }
+
+    .hero-ctas {
+      margin-top: 2.5rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp .7s .3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1rem; letter-spacing: .1em; text-transform: uppercase;
+      padding: .85rem 2rem;
+      border: none; cursor: pointer; border-radius: 3px;
+      position: relative; overflow: hidden;
+      transition: background .2s, transform .15s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(0,212,255,.35) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform .45s;
+    }
+    .btn-primary:hover { background: #0047dd; transform: translateY(-2px); }
+    .btn-primary:hover::after { transform: translateX(100%); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--cyan);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1rem; letter-spacing: .1em; text-transform: uppercase;
+      padding: .83rem 2rem;
+      border: 1.5px solid rgba(0,212,255,.5); cursor: pointer; border-radius: 3px;
+      transition: border-color .2s, color .2s, transform .15s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--cyan); color: #fff; transform: translateY(-2px); }
+
+    .hero-stats {
+      margin-top: 4rem;
+      display: flex; gap: 3rem; flex-wrap: wrap;
+      animation: fadeUp .7s .4s ease both;
+    }
+    .stat-num {
+      font-family: 'Black Ops One', cursive;
+      font-size: 2.4rem;
+      color: var(--cyan);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gray);
+      margin-top: .3rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 2.5rem; }
+    .section-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .8rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: .6rem;
+    }
+    .section-title {
+      font-family: 'Black Ops One', cursive;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      text-transform: uppercase;
+      line-height: 1.05;
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--deep); }
+    .services-header { text-align: center; margin-bottom: 3.5rem; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .service-card {
+      background: var(--card);
+      border: 1px solid rgba(0,212,255,.1);
+      border-radius: 6px;
+      padding: 2rem;
+      transition: border-color .25s, transform .25s;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s;
+    }
+    .service-card:hover { border-color: rgba(0,212,255,.35); transform: translateY(-4px); }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+    .service-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.25rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .service-desc { color: var(--gray); font-size: .95rem; line-height: 1.6; }
+
+    /* ── WHY US ── */
+    #why { background: var(--navy); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .why-list { list-style: none; margin-top: 2rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .why-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1.2rem;
+      background: var(--card);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 6px 6px 0;
+    }
+    .why-check { color: var(--cyan); font-size: 1.2rem; flex-shrink: 0; margin-top: .1rem; }
+    .why-item-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: .06em; text-transform: uppercase; }
+    .why-item-desc { color: var(--gray); font-size: .9rem; margin-top: .2rem; }
+
+    .why-visual {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    .why-box {
+      background: var(--card);
+      border: 1px solid rgba(0,212,255,.12);
+      border-radius: 6px;
+      padding: 1.8rem 1.4rem;
+      text-align: center;
+    }
+    .why-box-num {
+      font-family: 'Black Ops One', cursive;
+      font-size: 2.8rem;
+      color: var(--blue);
+      line-height: 1;
+    }
+    .why-box-label { font-family: 'Barlow Condensed', sans-serif; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gray); margin-top: .4rem; }
+    .why-box.accent-box { background: linear-gradient(135deg, rgba(0,87,255,.2), rgba(0,212,255,.1)); border-color: rgba(0,212,255,.3); }
+    .why-box.accent-box .why-box-num { color: var(--cyan); }
+
+    /* ── QUOTE FORM ── */
+    #quote { background: var(--deep); }
+    .quote-inner {
+      max-width: 700px; margin: 0 auto;
+    }
+    .quote-header { margin-bottom: 2.5rem; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: .45rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .82rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--gray);
+    }
+    input, select, textarea {
+      background: var(--card);
+      border: 1px solid rgba(0,212,255,.2);
+      border-radius: 4px;
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: .95rem;
+      padding: .75rem 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      width: 100%;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0,212,255,.12);
+    }
+    select option { background: var(--card); }
+    textarea { resize: vertical; min-height: 110px; }
+    .form-submit {
+      margin-top: 1.5rem;
+      display: flex; justify-content: flex-start;
+    }
+    .success-msg {
+      display: none;
+      margin-top: 1.2rem;
+      padding: 1rem 1.4rem;
+      background: rgba(0,212,255,.1);
+      border: 1px solid rgba(0,212,255,.35);
+      border-radius: 4px;
+      color: var(--cyan);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; letter-spacing: .05em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      border-top: 1px solid rgba(0,212,255,.1);
+      padding: 3rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Black Ops One', cursive;
+      font-size: 1.2rem;
+      color: var(--cyan);
+    }
+    .footer-logo span { color: var(--white); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-size: .9rem; letter-spacing: .08em; text-transform: uppercase; transition: color .2s; }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-copy { color: var(--gray); font-size: .82rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .why-grid { grid-template-columns: 1fr; }
+      .why-visual { order: -1; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Soak <span>&amp; Spray</span></div>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#quote">Get a Quote</a></li>
+    </ul>
+    <a href="#quote" class="btn-primary" style="padding:.6rem 1.4rem;font-size:.85rem;">Free Quote</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="drops" id="drops"></div>
+    <div class="hero-content">
+      <div class="hero-badge">⚡ Professional Pressure Washing</div>
+      <h1>
+        Blast It
+        <span class="accent">Clean.</span>
+      </h1>
+      <p class="hero-sub">
+        Soak &amp; Spray delivers powerful, precision pressure washing that restores your property to its best. Driveways, decks, siding — we make it look brand new.
+      </p>
+      <div class="hero-ctas">
+        <a href="#quote" class="btn-primary">Get a Free Quote</a>
+        <a href="#services" class="btn-ghost">Our Services</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Jobs Completed</div>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Satisfaction</div>
+        </div>
+        <div>
+          <div class="stat-num">24hr</div>
+          <div class="stat-label">Response Time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-header">
+      <div class="section-tag">What We Do</div>
+      <h2 class="section-title">Our Services</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🏠</div>
+        <div class="service-name">House Washing</div>
+        <p class="service-desc">Full exterior soft wash removes mold, mildew, algae, and grime without damaging your siding or paint.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚗</div>
+        <div class="service-name">Driveway &amp; Concrete</div>
+        <p class="service-desc">High-pressure surface cleaning blasts oil stains, tire marks, and years of buildup off your concrete and pavers.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌲</div>
+        <div class="service-name">Deck &amp; Patio</div>
+        <p class="service-desc">Restore your deck or patio to like-new condition. Safe for wood, composite, and stone surfaces.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏢</div>
+        <div class="service-name">Commercial Cleaning</div>
+        <p class="service-desc">Storefronts, parking lots, and building exteriors — we keep your business looking sharp and professional.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚿</div>
+        <div class="service-name">Roof Soft Wash</div>
+        <p class="service-desc">Low-pressure soft washing removes black streaks and organic growth without lifting shingles or voiding warranties.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏊</div>
+        <div class="service-name">Pool Decks &amp; Fences</div>
+        <p class="service-desc">Slip-hazard algae and staining gone. Clean, bright pool surrounds and fences that actually look good again.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why">
+    <div class="why-grid">
+      <div>
+        <div class="section-tag">Why Choose Us</div>
+        <h2 class="section-title">We Don't<br/>Cut Corners.</h2>
+        <ul class="why-list">
+          <li class="why-item">
+            <span class="why-check">✦</span>
+            <div>
+              <div class="why-item-title">Licensed &amp; Insured</div>
+              <div class="why-item-desc">Fully covered so you never have to worry. We protect your property as if it were our own.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <span class="why-check">✦</span>
+            <div>
+              <div class="why-item-title">Eco-Friendly Solutions</div>
+              <div class="why-item-desc">Biodegradable detergents that are tough on grime, gentle on your landscaping and the environment.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <span class="why-check">✦</span>
+            <div>
+              <div class="why-item-title">No Hidden Fees</div>
+              <div class="why-item-desc">Upfront quotes, transparent pricing. What we quote is what you pay — no surprises.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <span class="why-check">✦</span>
+            <div>
+              <div class="why-item-title">Satisfaction Guaranteed</div>
+              <div class="why-item-desc">Not happy? We'll come back and make it right. That's our promise on every single job.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="why-visual">
+        <div class="why-box accent-box">
+          <div class="why-box-num">500+</div>
+          <div class="why-box-label">Happy Customers</div>
+        </div>
+        <div class="why-box">
+          <div class="why-box-num">5★</div>
+          <div class="why-box-label">Average Rating</div>
+        </div>
+        <div class="why-box">
+          <div class="why-box-num">3+</div>
+          <div class="why-box-label">Years in Business</div>
+        </div>
+        <div class="why-box accent-box">
+          <div class="why-box-num">24hr</div>
+          <div class="why-box-label">Response Time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE FORM -->
+  <section id="quote">
+    <div class="quote-inner">
+      <div class="quote-header">
+        <div class="section-tag">Get Started</div>
+        <h2 class="section-title">Request a<br/>Free Quote</h2>
+        <p style="color:var(--gray);margin-top:1rem;line-height:1.65;">Fill out the form and we'll get back to you within 24 hours with a no-obligation quote.</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" placeholder="Jackson" />
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" placeholder="Smith" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@email.com" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="(555) 000-0000" />
+        </div>
+        <div class="form-group full">
+          <label for="address">Property Address</label>
+          <input type="text" id="address" placeholder="123 Main St, Beverly, MA" />
+        </div>
+        <div class="form-group full">
+          <label for="service">Service Needed</label>
+          <select id="service">
+            <option value="" disabled selected>Select a service…</option>
+            <option>House Washing</option>
+            <option>Driveway &amp; Concrete</option>
+            <option>Deck &amp; Patio</option>
+            <option>Commercial Cleaning</option>
+            <option>Roof Soft Wash</option>
+            <option>Pool Deck &amp; Fence</option>
+            <option>Multiple / Not Sure</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="message">Additional Details</label>
+          <textarea id="message" placeholder="Tell us a bit about your project — size, condition, any specific concerns…"></textarea>
+        </div>
+      </div>
+      <div class="form-submit">
+        <button class="btn-primary" onclick="submitForm()">Send My Quote Request →</button>
+      </div>
+      <div class="success-msg" id="success">
+        ✦ Got it! We'll reach out within 24 hours with your free quote.
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Soak <span>&amp; Spray</span> Pressure Washing</div>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#why">Why Us</a>
+      <a href="#quote">Quote</a>
+    </div>
+    <div class="footer-copy">© 2026 Soak &amp; Spray. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // ── rain drops ──
+    const container = document.getElementById('drops');
+    for (let i = 0; i < 55; i++) {
+      const d = document.createElement('div');
+      d.classList.add('drop');
+      const h = 20 + Math.random() * 60;
+      d.style.cssText = `
+        left: ${Math.random() * 100}%;
+        height: ${h}px;
+        animation-duration: ${1.4 + Math.random() * 2.2}s;
+        animation-delay: ${Math.random() * 4}s;
+        opacity: ${.15 + Math.random() * .45};
+        width: ${Math.random() > .7 ? '2px' : '1px'};
+      `;
+      container.appendChild(d);
+    }
+
+    // ── form submit ──
+    function submitForm() {
+      const req = ['fname','lname','email','phone','address','service'];
+      let ok = true;
+      req.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) { el.style.borderColor = '#ff4466'; ok = false; }
+        else el.style.borderColor = '';
+      });
+      if (!ok) return;
+      document.getElementById('success').style.display = 'block';
+      document.querySelectorAll('input,select,textarea').forEach(el => el.value = '');
+    }
+
+    // ── scroll reveal ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.service-card, .why-item, .why-box').forEach(el => {
+      el.style.cssText += 'opacity:0;transform:translateY(22px);transition:opacity .5s ease,transform .5s ease;';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
